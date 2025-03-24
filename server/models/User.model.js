@@ -27,7 +27,7 @@ module.exports = (sequelize) => {
       },
     },
     role: {
-      type: DataTypes.ENUM("Alumno", "Jefatura", "Control Escolar", "Profesor"),
+      type: DataTypes.ENUM("Alumno", "Maestro", "Bibliotecario"),
       allowNull: false,
     },
     matricula: {
@@ -41,8 +41,8 @@ module.exports = (sequelize) => {
           if (this.role === 'Alumno' && value && this.numeroTrabajador) {
             throw new Error("Matricula and numero de trabajador cannot be provided together for 'Alumno' role.");
           }
-          if ((this.role === 'Profesor' || this.role === 'Control Escolar' || this.role === 'Jefatura') && value) {
-            throw new Error("Matricula is not allowed for 'Profesor', 'Jefatura', or 'Control Escolar' roles.");
+          if ((this.role === 'Maestro' || this.role === 'Bibliotecario') && value) {
+            throw new Error("Matricula is not allowed for 'Maestro', 'Bibliotecario' roles.");
           }
         }
       }
@@ -56,7 +56,7 @@ module.exports = (sequelize) => {
             throw new Error("Numero de trabajador is required for roles other than 'Alumno'.");
           }
           if (this.role !== 'Alumno' && value && this.matricula) {
-            throw new Error("Numero de trabajador and matricula cannot be provided together for 'Profesor', 'Jefatura' or 'Control Escolar' roles.");
+            throw new Error("Numero de trabajador and matricula cannot be provided together for 'Maestro', 'Bibliotecario' roles.");
           }
         }
       },

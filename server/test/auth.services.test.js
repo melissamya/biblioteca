@@ -23,7 +23,7 @@ describe('signupUser', () => {
       signupUser({
         id: 1,
         email: 'test@example.com',
-        password: 'password123',
+        password: 'Password12345678',
         name: 'John Doe',
         role: 'Alumno',
         matricula: '12345',
@@ -37,20 +37,22 @@ describe('signupUser', () => {
 
     await expect(
       signupUser({
+        id: 1,
         email: 'test@example.com',
-        password: 'password123',
+        password: 'Password12345678',
         name: 'John Doe',
         role: 'InvalidRole', // Invalid role
         matricula: '12345',
         numeroTrabajador: null,
       })
-    ).rejects.toThrow("Invalid role. Valid roles are: Alumno, Jefatura, Control Escolar, Profesor.");
+    ).rejects.toThrow("Invalid role. Valid roles are: Alumno, Bibliotecario, Maestro.");
   });
 
   it('should throw an error if email format is invalid', async () => {
     const userData = {
+      id: 1,
       email: "invalidemail", // Invalid email format
-      password: "password123",
+      password: "Password12345678",
       name: "Test User",
       role: "Alumno",
       matricula: "12345",
@@ -63,8 +65,9 @@ describe('signupUser', () => {
 
   it('should throw an error if matricula is missing for Alumno', async () => {
     const userData = {
+      id: 1,
       email: 'test@example.com',
-      password: 'password123',
+      password: 'Password12345678',
       name: 'John Doe',
       role: 'Alumno',
       matricula: null, // Missing matricula
@@ -74,19 +77,19 @@ describe('signupUser', () => {
     await expect(signupUser(userData)).rejects.toThrow('Matricula is required for \'Alumno\' role.');
   });
 
-  it('should throw an error if numero de trabajador is missing for Jefatura', async () => {
+  it('should throw an error if numero de trabajador is missing for Maestro', async () => {
     User.findOne.mockResolvedValueOnce(null);
   
     await expect(
       signupUser({
         email: 'test@example.com',
-        password: 'password123',
+        password: 'Password12345678',
         name: 'John Doe',
-        role: 'Jefatura',
+        role: 'Bibliotecario',
         matricula: null,
         numeroTrabajador: null, // Missing numeroTrabajador
       })
-    ).rejects.toThrow("Numero de trabajador is required for 'Profesor' or 'Jefatura', 'Control Escolar' roles.");
+    ).rejects.toThrow("Numero de trabajador is required for 'Maestro' or 'Bibliotecario' roles.");
   });  
 
   it('should create a new user successfully', async () => {
@@ -100,7 +103,7 @@ describe('signupUser', () => {
 
     const result = await signupUser({
       email: 'test@example.com',
-      password: 'password123',
+      password: 'Password12345678',
       name: 'John Doe',
       role: 'Alumno',
       matricula: '12345',
@@ -115,7 +118,7 @@ describe('signupUser', () => {
   it('should throw an error if matricula and numeroTrabajador are provided together for Alumno', async () => {
     const userData = {
       email: "test@example.com",
-      password: "password123",
+      password: "Password12345678",
       name: "Test User",
       role: "Alumno",
       matricula: "12345",
@@ -125,51 +128,39 @@ describe('signupUser', () => {
     await expect(signupUser(userData)).rejects.toThrow("Matricula and numero de trabajador cannot be provided together for 'Alumno' role.");
   });
 
-  it('should throw an error if matricula and numeroTrabajador are provided together for Profesor', async () => {
+  it('should throw an error if matricula and numeroTrabajador are provided together for Maestro', async () => {
     const userData = {
       email: "test@example.com",
-      password: "password123",
+      password: "Password12345678",
       name: "Test User",
-      role: "Profesor",
+      role: "Maestro",
       matricula: "12345",
       numeroTrabajador: "67890" // Both matricula and numeroTrabajador are provided
     };
 
-    await expect(signupUser(userData)).rejects.toThrow("Numero de trabajador and matricula cannot be provided together for 'Profesor', 'Jefatura' or 'Control Escolar' roles.");
+    await expect(signupUser(userData)).rejects.toThrow("Numero de trabajador and matricula cannot be provided together for 'Maestro', 'Bibliotecario' roles.");
   });
 
-  it('should throw an error if matricula and numeroTrabajador are provided together for Jefatura', async () => {
+  it('should throw an error if matricula and numeroTrabajador are provided together for Bibliotecario', async () => {
     const userData = {
       email: "test@example.com",
-      password: "password123",
+      password: "Password12345678",
       name: "Test User",
-      role: "Jefatura",
+      role: "Bibliotecario",
       matricula: "12345",
       numeroTrabajador: "67890" // Both matricula and numeroTrabajador are provided
     };
 
-    await expect(signupUser(userData)).rejects.toThrow("Numero de trabajador and matricula cannot be provided together for 'Profesor', 'Jefatura' or 'Control Escolar' roles.");
+    await expect(signupUser(userData)).rejects.toThrow("Numero de trabajador and matricula cannot be provided together for 'Maestro', 'Bibliotecario' roles.");
   });
 
-  it('should throw an error if matricula and numeroTrabajador are provided together for Control Escolar', async () => {
-    const userData = {
-      email: "test@example.com",
-      password: "password123",
-      name: "Test User",
-      role: "Control Escolar",
-      matricula: "12345",
-      numeroTrabajador: "67890" // Both matricula and numeroTrabajador are provided
-    };
 
-    await expect(signupUser(userData)).rejects.toThrow("Numero de trabajador and matricula cannot be provided together for 'Profesor', 'Jefatura' or 'Control Escolar' roles.");
-  });
-  
   it('should create a new user if valid data is provided', async () => {
     const userData = {
       email: "test@example.com",
-      password: "password123",
+      password: "Password12345678",
       name: "Test User",
-      role: "Profesor",
+      role: "Maestro",
       matricula: null,
       numeroTrabajador: "67890"
     };
@@ -196,8 +187,9 @@ describe('signupUser', () => {
 
   it('should throw an error if email format is invalid', async () => {
     const userData = {
+      id: 1,
       email: "invalidemail", // Invalid email format
-      password: "password123",
+      password: "Password12345678",
       name: "Test User",
       role: "Alumno",
       matricula: "12345",

@@ -47,31 +47,38 @@ const signupUser = async ({email, password, name, role, matricula, numeroTrabaja
   try {
 
      // Validate if the email format is correct
-     const emailRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
-     if (emailRegex.test(email)) {
+     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    // Check if user already exists first
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      throw new Error("User already exists.");
+    }
+
+    // Validate email format
+    if (!emailRegex.test(email)) {
       throw new Error("Validation error: Invalid email format.");
     }
+
+    // Validate role
+    const validRoles = ["Alumno", "Maestro", "Bibliotecario"];
+    if (!validRoles.includes(role)) {
+      throw new Error("Invalid role. Valid roles are: Alumno, Bibliotecario, Maestro.");
+    }
+
+
 
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
     if (!passwordRegex.test(password)) {
       throw new Error( "Password must be at least 6 characters long, contain one uppercase letter, one lowercase letter, and one number");
     }
 
-    const existingUser = await User.findOne({ where: { email } });
-    if (existingUser) {
-      throw new Error("User already exists.");
-    }
-
-    const validRoles = ["Alumno", "Jefatura", "Control Escolar", "Profesor"];
-    if (!validRoles.includes(role)) {
-      throw new Error("Invalid role. Valid roles are: Alumno, Jefatura, Control Escolar, Profesor.");
-    }
 
     if (matricula && numeroTrabajador) {
       if (role === 'Alumno') {
         throw new Error("Matricula and numero de trabajador cannot be provided together for 'Alumno' role.");
-      } else if (role === 'Profesor' || role === 'Jefatura' || role === 'Control Escolar') {
-        throw new Error("Numero de trabajador and matricula cannot be provided together for 'Profesor', 'Jefatura' or 'Control Escolar' roles.");
+      } else if (role === 'Maestro' || role === 'Bibliotecario') {
+        throw new Error("Numero de trabajador and matricula cannot be provided together for 'Maestro', 'Bibliotecario' roles.");
       }
     }
 
@@ -79,8 +86,8 @@ const signupUser = async ({email, password, name, role, matricula, numeroTrabaja
       throw new Error('Matricula is required for \'Alumno\' role.');
     }
 
-    if ((role === 'Profesor' || role === 'Jefatura' || role === 'Control Escolar') && !numeroTrabajador) {
-      throw new Error("Numero de trabajador is required for 'Profesor' or 'Jefatura', 'Control Escolar' roles.");
+    if ((role === 'Maestro' || role === 'Bibliotecario') && !numeroTrabajador) {
+      throw new Error("Numero de trabajador is required for 'Maestro' or 'Bibliotecario' roles.");
     }
 
 

@@ -2,6 +2,7 @@ import "./SignupPage.css";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import authService from "../../services/auth.service";
+import {Select, TextField, MenuItem, FormControl, Container, Box} from '@mui/material';
 
 function SignupPage() {
   const [email, setEmail] = useState("");
@@ -57,51 +58,43 @@ function SignupPage() {
   };
 
   return (
-    <div className="SignupPage">
-       <div>
-        <h3>Request Body:</h3>
-      </div>
+    <Container>
+      
       <h1>Sign Up</h1>
+      <Box >
+        
+      
+      
+        <TextField label="Correo electronico" variant="standard"value={email} onChange={handleEmail} />
+        <TextField label="Contrasena" variant="standard" value={password} onChange={handlePassword} />
+        <TextField label="Nombre" variant="standard" value={name} onChange={handleName} />
+       <FormControl fullWidth >
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={role}
+          label="Rol"
+          onChange={handleRole}
+        >
+          <MenuItem value="Alumno">Alumno</MenuItem>
+          <MenuItem value="Maestro">Maestro</MenuItem>
+          <MenuItem value="Bibliotecario">Bibliotecario</MenuItem>
+        </Select>
+        </FormControl>
 
-      <form onSubmit={handleSignupSubmit}>
-        <label>Email:</label>
-        <input type="email" name="email" value={email} onChange={handleEmail} />
+        <TextField label="Matricula" variant="standard" value={matricula} onChange={handleMatricula} />
+        <TextField label="Numero de trabajador" variant="standard"  value={numeroTrabajador} onChange={handleNumeroTrabajador} />
+        <button type="submit" onSubmit={handleSignupSubmit}>Sign Up</button>
 
-        <label>Password:</label>
-        <input
-          type="password"
-          name="password"
-          value={password}
-          onChange={handlePassword}
-        />
+        </Box>  
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
 
-        <label>Name:</label>
-        <input type="text" name="name" value={name} onChange={handleName} />
-
-        <label>Role:</label>
-        <select type="text" name="role" value={role} onChange={handleRole}>
-          <optgroup>
-            <option value="Alumno"> Alumno </option>
-            <option value="Profesor"> Profesor </option>
-            <option value="Control Escolar"> Control Escolar </option>
-            <option value="Jefatura"> Jefatura </option>
-          </optgroup>
-        </select>
-
-        <label>Matricula:</label>
-        <input type="text" name="matricula" value={matricula} onChange={handleMatricula} />
-
-        <label>Numero de trabajador:</label>
-        <input type="text" name="numeroDeTrabajador" value={numeroTrabajador} onChange={handleNumeroTrabajador} />
-
-        <button type="submit">Sign Up</button>
-      </form>
-
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-
-      <p>Already have account?</p>
-      <Link to={"/login"}> Login</Link>
-    </div>
+      
+      
+      
+      <p>Ya tienes una cuenta?</p>
+      <Link to={"/login"}> Iniciar sesion</Link>
+    </Container>
   );
 }
 

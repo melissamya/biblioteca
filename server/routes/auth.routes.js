@@ -16,7 +16,7 @@ router.post("/signup", async (req, res) => {
       return res.status(400).json({ message: "Provide name" });
     } else if (!role) {
       return res.status(400).json({ message: "Provide role" });
-    } else if ((role == "Profesor" || role == "Jefatura" || role == "Control Escolar") && !numeroTrabajador) {
+    } else if ((role == "Maestro" || role == "Bibliotecario") && !numeroTrabajador) {
       return res.status(400).json({ message: "Provide numero de trabajador" });
     } else if (role == "Alumno" && !matricula) {
       return res.status(400).json({ message: "Provide matricula" });
@@ -37,8 +37,8 @@ router.post("/signup", async (req, res) => {
     if (matricula && numeroTrabajador) {
       if (role === 'Alumno') {
         res.status(400).json({ message:"Matricula and numero de trabajador cannot be provided together for 'Alumno' role."});
-      } else if (role === 'Profesor' || role === 'Jefatura' || role === 'Control Escolar') {
-        res.status(400).json({ message:"Numero de trabajador and matricula cannot be provided together for 'Profesor', 'Jefatura' or 'Control Escolar' roles."});
+      } else if (role === 'Maestro' || role === 'Bibliotecario') {
+        res.status(400).json({ message:"Numero de trabajador and matricula cannot be provided together for 'Maestro, 'Bibliotecario' roles."});
       }
     }
 
