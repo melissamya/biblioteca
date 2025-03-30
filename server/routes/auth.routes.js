@@ -9,17 +9,17 @@ router.post("/signup", async (req, res) => {
 
     // Validation
     if (!email) {
-      return res.status(400).json({ message: "Provide email" });
+      return res.status(400).json({ message: "olviste colocar tu correo" });
     } else if (!password) {
-      return res.status(400).json({ message: "Provide password" });
+      return res.status(400).json({ message: "esta contraseña es incorrecta" });
     } else if (!name) {
-      return res.status(400).json({ message: "Provide name" });
+      return res.status(400).json({ message: "campo no valido" });
     } else if (!role) {
       return res.status(400).json({ message: "Provide role" });
     } else if ((role == "Maestro" || role == "Bibliotecario") && !numeroTrabajador) {
-      return res.status(400).json({ message: "Provide numero de trabajador" });
+      return res.status(400).json({ message: "numero no encontrado" });
     } else if (role == "Alumno" && !matricula) {
-      return res.status(400).json({ message: "Provide matricula" });
+      return res.status(400).json({ message: "matricula no encontrada" });
     }
 
     const emailRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;

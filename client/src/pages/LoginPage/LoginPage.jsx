@@ -3,11 +3,20 @@ import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/auth.context";
 import authService from "../../services/auth.service";
+import {TextField, FormControl, Button} from '@mui/material';
+import Input from '@mui/material/Input';
+import Visibility from '@mui/icons-material/Visibility';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import InputLabel from '@mui/material/InputLabel';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import * as React from 'react';
 
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(undefined);
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const navigate = useNavigate();
 
@@ -44,28 +53,53 @@ function LoginPage() {
       });
   };
 
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  function handleMouseDownPassword(event) { 
+    event.preventDefault();
+  }
+  
+  const handleMouseUpPassword = (event) => {
+    event.preventDefault();
+  };
+
   return (
     <div className="LoginPage">
-      <h1>Login</h1>
+      <h1>Iniciar sesion</h1>
 
       <form onSubmit={handleLoginSubmit}>
-        <label>Email:</label>
-        <input type="email" name="email" value={email} onChange={handleEmail} />
+      
+       <TextField label="Correo electronico" variant="standard"  value={email} onChange={handleEmail} />
 
-        <label>Password:</label>
-        <input
-          type="password"
-          name="password"
-          value={password}
-          onChange={handlePassword}
-        />
+       <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
+          <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+          <Input
+            id="standard-adornment-password"
+            type={showPassword ? 'text' : 'password'}
+            onChange={handlePassword}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label={
+                    showPassword ? 'hide the password' : 'display the password'
+                  }
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  onMouseUp={handleMouseUpPassword}
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
 
-        <button type="submit">Login</button>
+        <Button type="submit">Login</Button>
       </form>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
 
-      <p>Don't have an account yet?</p>
-      <Link to={"/signup"}> Sign Up</Link>
+      <p>Aun no tienes una cuenta?</p>
+      <Link to={"/signup"}> Crear cuenta</Link>
     </div>
   );
 }

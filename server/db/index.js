@@ -16,7 +16,10 @@ const sequelize = new Sequelize(
     },
   }
 );
-
+sequelize.sync({ alter: true })
+  .then(() => console.log("Database synchronized"))
+  .catch(err => console.error("Error syncing database:", err));
+  
 const db = {};
 
 db.User = userModel(sequelize);  

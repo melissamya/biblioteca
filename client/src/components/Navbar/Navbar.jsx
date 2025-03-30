@@ -2,6 +2,7 @@ import "./Navbar.css";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/auth.context";
+import { Button } from "@mui/material";
 
 function Navbar() {
   // Subscribe to the AuthContext to gain access to
@@ -10,19 +11,15 @@ function Navbar() {
 
   return (
     <nav>
-      <Link to="/">
-        <button>Home</button>
-      </Link>
-
+    
       {isLoggedIn && (
         <>
-          <button onClick={logOutUser}>Logout</button>
+          <Button onClick={logOutUser}>Cerrar sesion</Button>
 
           <Link to="/profile">
-            <button>Profile</button>
-            {/* <img src="https://picsum.photos/id/402/200/300" style={{ width: 50, height: 50, borderRadius: 25}} alt="profile" /> */}
+            <img alt="Mi perfil" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png" style={{ width: 50, height: 50, borderRadius: 25}} />
           </Link>
-
+        
           <span>{user && user.name}</span>
         </>
       )}
@@ -31,11 +28,11 @@ function Navbar() {
         <>
           <Link to="/signup">
             {" "}
-            <button>Sign Up</button>{" "}
+            <Button>Crear cuenta</Button>{" "}
           </Link>
           <Link to="/login">
             {" "}
-            <button>Login</button>{" "}
+            <Button>Iniciar sesion</Button>{" "}
           </Link>
         </>
       )}

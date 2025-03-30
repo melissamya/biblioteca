@@ -3,6 +3,13 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import authService from "../../services/auth.service";
 import {Select, TextField, MenuItem, FormControl, Container, Box} from '@mui/material';
+import InputLabel from '@mui/material/InputLabel';
+import Input from '@mui/material/Input';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import * as React from 'react';
 
 function SignupPage() {
   const [email, setEmail] = useState("");
@@ -12,6 +19,7 @@ function SignupPage() {
   const [matricula, setMatricula] = useState("");
   const [numeroTrabajador, setNumeroTrabajador] = useState("");
   const [errorMessage, setErrorMessage] = useState(undefined);
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const navigate = useNavigate();
 
@@ -57,17 +65,50 @@ function SignupPage() {
       });
   };
 
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  function handleMouseDownPassword(event) {
+    event.preventDefault();
+  }
+  
+  const handleMouseUpPassword = (event) => {
+    event.preventDefault();
+  };
+
   return (
     <Container>
       
-      <h1>Sign Up</h1>
-      <Box >
-        
+      <h1>Crear cuenta</h1>
       
-      
+ <form onSubmit={handleSignupSubmit}>  
+  
+        <TextField label="Nombre(s)" variant="standard" value={name} onChange={handleName} />
         <TextField label="Correo electronico" variant="standard"value={email} onChange={handleEmail} />
-        <TextField label="Contrasena" variant="standard" value={password} onChange={handlePassword} />
-        <TextField label="Nombre" variant="standard" value={name} onChange={handleName} />
+        
+        <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
+          <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+          <Input
+            id="standard-adornment-password"
+            type={showPassword ? 'text' : 'password'}
+            onChange={handlePassword}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label={
+                    showPassword ? 'hide the password' : 'display the password'
+                  }
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  onMouseUp={handleMouseUpPassword}
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+        
        <FormControl fullWidth >
         <Select
           labelId="demo-simple-select-label"
@@ -79,6 +120,8 @@ function SignupPage() {
           <MenuItem value="Alumno">Alumno</MenuItem>
           <MenuItem value="Maestro">Maestro</MenuItem>
           <MenuItem value="Bibliotecario">Bibliotecario</MenuItem>
+
+
         </Select>
         </FormControl>
 
@@ -86,9 +129,9 @@ function SignupPage() {
         <TextField label="Numero de trabajador" variant="standard"  value={numeroTrabajador} onChange={handleNumeroTrabajador} />
         <button type="submit" onSubmit={handleSignupSubmit}>Sign Up</button>
 
-        </Box>  
+       
         {errorMessage && <p className="error-message">{errorMessage}</p>}
-
+        </form>
       
       
       
@@ -97,5 +140,6 @@ function SignupPage() {
     </Container>
   );
 }
+
 
 export default SignupPage;
